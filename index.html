@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature and Humidity Monitor</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .sensor-data {
+            font-size: 24px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .sensor-data img {
+            width: 50px;
+            height: 50px;
+        }
+        .sensor-data p {
+            margin: 0;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .sensor-data span {
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Temperature and Humidity Monitor</h1>
+    </header>
+    <div class="container">
+        <div class="sensor-data">
+            <img src="https://cdn-icons-png.flaticon.com/512/434/434533.png" alt="Temperature Icon">
+            <p>Temperature: <span id="temperature">Loading...</span> °C</p>
+        </div>
+        <div class="sensor-data">
+            <img src="https://cdn-icons-png.flaticon.com/512/6393/6393411.png" alt="Humidity Icon">
+            <p>Humidity: <span id="humidity">Loading...</span> %</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCT_SVnCECJ30bmM2wzvwoulIY_JzGE7hk",
+            authDomain: "dht11new-fd7f5.firebaseapp.com",
+            databaseURL: "https://dht11new-fd7f5-default-rtdb.firebaseio.com/",
+            projectId: "dht11new-fd7f5",
+            storageBucket: "dht11new-fd7f5.appspot.com",
+            messagingSenderId: "8616567815341:861656781534:web:002fcb5b3e42129e61284f",
+            appId: "APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Fetch data from Firebase
+        function fetchData() {
+            database.ref("DHT/temperature").on("value", function(snapshot) {
+                document.getElementById("temperature").innerText = snapshot.val();
+            });
+
+            database.ref("DHT/humidity").on("value", function(snapshot) {
+                document.getElementById("humidity").innerText = snapshot.val();
+            });
+        }
+
+        fetchData();
+    </script>
+</body>
+</html>
